@@ -1,0 +1,343 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: Employer Service (HrNG)
+  description: |
+    HrNG service that will provide the management of the Employer data. 
+    The following operations will be provided: \
+    Creation of an employer, getting the list of employers, 
+    updating an employer, deletion of an employer, and finding an employer.
+  termsOfService: https://htng.io/terms
+  contact:
+    name: Admin
+    url: https://hrng.acme.io/contact
+    email: admin@hrng.acme.io
+  license:
+    name: CC Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
+    url: https://hrng.acme.io/license
+servers:
+  - url: https://api.hrng.acme.io/v1
+    description: Production server
+  - url: https://dev.api.hrng.acme.io/v1
+    description: Development server
+  - url: https://qa.api.hrng.acme.io/v1
+    description: QA server
+  - url: https://uat.api.hrng.acme.io/v1
+    description: UAT server
+  - url: https://stg.api.hrng.acme.io/v1
+    description: Staging server
+paths:
+  /job:
+    get:
+      tags:
+        - job
+      summary: Find all jobPosts
+      description: Find all jobPosts
+      operationId: findJobs
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/jobPost'
+
+
+        "401":
+          description: Getting all Jobpost is Unauthorized to access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "403":
+          description: Getting all Job request is Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "404":
+          description: No Jobs found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+
+    post:
+      tags:
+        - job
+      summary: Create new job
+      description: Create new job
+      operationId: createJob
+      requestBody:
+        description: Create a new job
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jobPost'
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/jobPost'
+                  - $ref: '#/components/schemas/ErrorResponse'
+
+        "401":
+          description: JobPost is Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "403":
+          description: JobPost request is Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "404":
+          description: No Jobs Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - job
+      summary: Update job post
+      description: Update job post
+      operationId: updateJobPost
+      requestBody:
+        description: Update job post
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jobPost'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/jobPost'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: JobPost not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Invalid employer data supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /job/{jobId}:
+    get:
+      tags:
+        - job
+      summary: Find jobPost by ID
+      description: Find jobPost by ID
+      operationId: findJobById
+      parameters:
+        - name: jobId
+          in: path
+          description: ID of job to return
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/jobPost'
+        "400":
+          description: Invalid jobPost ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: jobPost not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+
+    delete:
+      tags:
+        - job
+      summary: Delete JobPost by ID
+      description: Delete JobPost by ID
+      operationId: deleteJobById
+      parameters:
+        - name: jobId
+          in: path
+          description: ID of jobPost to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+
+        "204":
+          description: No content Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized to delete post by ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden Request for deleting the post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    jobPost:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        userId:
+          type: integer
+          format: int64
+          example: 10
+        positionTitle:
+          maxLength: 30
+          type: string
+          nullable: false
+          example: Java Programmer
+        jobType:
+          type: string
+          enum: [FULLTIME, PARTTIME, CONTRACT, CO-OP]
+          nullable: false
+          example: FULLTIME
+        salaryRange:
+#          type: object
+#          description: Set of salary ranges
+#          uniqueItems: true
+#          items:
+          $ref: '#/components/schemas/jobPost_salaryRange'
+        closingDate:
+          type: string
+          format: date
+        requiredQualification:
+          type: string
+          nullable: false
+        jobCity:
+          type: array
+          description: Job cities
+          uniqueItems: true
+          items:
+            type: string
+        description:
+          maxLength: 255
+          type: string
+        howToApply:
+          $ref: '#/components/schemas/jobPost_howToApply'
+        jobPostStatus:
+          type: string
+          enum: [DRAFT, ACTIVE, INACTIVE, DELETED, SUSPENDED, EXPIRED]
+
+        customeQuestionList:
+#          type: array
+#          description: create your custom questions
+#          uniqueItems: true
+#          items:
+          $ref: '#/components/schemas/jobPost_customeQuestionList'
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int32
+          example: 400
+        appId:
+          type: string
+          example: EMS-S2
+        dateTime:
+          type: string
+          example: 2022-11-29T18:34:39.793+00:00
+        message:
+          type: string
+          example: Sample error message.
+    jobPost_salaryRange:
+      type: object
+      properties:
+        salaryType:
+          type: string
+          nullable: false
+          enum: [ANUALLY, MONTHLY, HOURLY]
+        salaryMinimum:
+          type: string
+          nullable: false
+        salaryMaximum:
+          type: string
+        wage:
+          type: string
+    jobPost_howToApply:
+      type: object
+      properties:
+        applicationMethod:
+          type: string
+          enum: [EASY_APPLY, APPLY_ON_EMAIL, APPLY_ON_COMPANY_WEBSITE]
+        email:
+          type: string
+        website:
+          type: string
+    jobPost_customeQuestionList:
+      type: object
+      properties:
+        question:
+          type: array
+          description: three cities
+          uniqueItems: true
+          items:
+            type: string
+        answereType:
+          type: string
+          enum: [TEXT, NUMBER]
