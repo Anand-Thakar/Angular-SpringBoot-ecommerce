@@ -1,33 +1,55 @@
 package com.example.job.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.openapitools.model.JobPostCustomeQuestionListDTO.AnswereTypeEnum;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Objects;
 
 
 @Entity
 @Table(name = "job_post_custom_question_list")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class JobPostCustomQuestionList {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+
 
     @Column(name = "question")
     private String question;
 
+    @ToString.Exclude
+    @Basic(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     @Column(name = "answere_type_enum")
     private AnswereTypeEnum answereType;
 
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne()
     @JoinColumn(name = "job_post_id")
     private JobPost jobPost;
 
 
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "job_post_id")
+//    private JobPost jobPost;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        JobPostCustomQuestionList that = (JobPostCustomQuestionList) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

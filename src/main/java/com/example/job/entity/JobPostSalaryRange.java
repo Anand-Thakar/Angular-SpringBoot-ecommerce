@@ -1,19 +1,21 @@
 package com.example.job.entity;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.openapitools.model.JobPostSalaryRangeDTO.SalaryTypeEnum;
+import java.util.Objects;
 
 @Entity
 @Table(name = "job_post_salary_range")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class JobPostSalaryRange {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -34,5 +36,16 @@ public class JobPostSalaryRange {
     @JoinColumn(name = "job_post_salary_range_id")
     private JobPost jobPostSalaryRange;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        JobPostSalaryRange that = (JobPostSalaryRange) o;
+        return id != null && Objects.equals(id, that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

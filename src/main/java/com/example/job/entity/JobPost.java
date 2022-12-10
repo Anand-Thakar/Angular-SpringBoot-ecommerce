@@ -1,24 +1,22 @@
 package com.example.job.entity;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-import java.time.LocalDate;
-
-import org.openapitools.model.JobPostDTO.JobTypeEnum;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.openapitools.model.JobPostDTO.JobPostStatusEnum;
+import org.openapitools.model.JobPostDTO.JobTypeEnum;
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "job_post")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 public class JobPost {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,21 +47,32 @@ public class JobPost {
     @Column(name = "job_post_status_enum")
     private JobPostStatusEnum jobPostStatusEnum;
 
-    @OneToOne(mappedBy = "jobPost", orphanRemoval = true)
+    @OneToOne(mappedBy = "jobPost", orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private JobPostHowToApply jobPostHowToApply;
 
-    @OneToOne(mappedBy = "jobPost", orphanRemoval = true)
-    private JobPostCustomQuestionList jobPostCustomQuestionList;
-
-    @OneToOne(mappedBy = "jobPostSalaryRange", orphanRemoval = true)
+    @OneToOne(mappedBy = "jobPostSalaryRange", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private JobPostSalaryRange jobPostSalaryRange;
 
     @Column(name = "job_city")
     private String jobCity;
 
-    //    @ElementCollection
-//    @Column(name = "job_city")
-//    @CollectionTable(name = "job_post_jobCity", joinColumns = @JoinColumn(name = "owner_id"))
-//    private Set<String> jobCity = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<JobPostCustomQuestionList> jobPostCustomQuestionLists = new java.util.LinkedHashSet<>();
 
+    //    @OneToOne(mappedBy = "jobPost", orphanRemoval = true)
+//    private JobPostCustomQuestionList jobPostCustomQuestionList;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        JobPost jobPost = (JobPost) o;
+        return id != null && Objects.equals(id, jobPost.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -12,7 +12,9 @@ import org.openapitools.model.JobPostDTO;
 import org.openapitools.model.JobPostHowToApplyDTO;
 import org.openapitools.model.JobPostSalaryRangeDTO;
 
+import java.util.List;
 import java.util.Set;
+
 
 @Mapper(componentModel = "spring")
 public interface JobPostMapper {
@@ -20,28 +22,45 @@ public interface JobPostMapper {
     JobPostMapper INSTANCE = Mappers.getMapper(JobPostMapper.class);
 
     @Mapping(source = "jobTypeEnum", target = "jobType")
+    //there is spelling mistake here. Not same. same variable can be ignored
     @Mapping(source = "requiredQualififcation", target = "requiredQualification")
     @Mapping(source = "jobPostStatusEnum", target = "jobPostStatus")
     @Mapping(source = "jobPostHowToApply", target = "howToApply")
-    @Mapping(source = "jobPostSalaryRange",target = "salaryRange")
-//    @Mapping(source = "customeQuestionList", target = "customeQuestionList")
+    @Mapping(source = "jobPostSalaryRange", target = "salaryRange")
+    @Mapping(source = "jobPostCustomQuestionLists", target = "customeQuestionList")
     JobPostDTO entityToDto(JobPost jobPost);
 
+    @Mapping(source = "jobType", target = "jobTypeEnum")
+    @Mapping(source = "jobPostStatus", target = "jobPostStatusEnum")
+    @Mapping(source = "howToApply", target = "jobPostHowToApply")
+    @Mapping(source = "salaryRange", target = "jobPostSalaryRange")
+    @Mapping(source = "customeQuestionList", target = "jobPostCustomQuestionLists")
+    //there is spelling mistake here. Not same. same variable can be ignored
+    @Mapping(source = "requiredQualification", target = "requiredQualififcation")
     JobPost dtoToEntity(JobPostDTO jobPostDTO);
 
-    @Mapping(source = "applicationMethodEnum",target = "applicationMethod")
+
+
+    Set<JobPostCustomeQuestionListDTO> map(Set<JobPostCustomQuestionList> jobPostCustomQuestionLists);
+
+    @Mapping(source = "applicationMethodEnum", target = "applicationMethod")
     JobPostHowToApplyDTO entityToDto(JobPostHowToApply jobPostHowToApply);
+
+    @Mapping(source = "applicationMethod", target = "applicationMethodEnum")
     JobPostHowToApply dtoToEntity(JobPostHowToApplyDTO jobPostHowToApplyDTO);
 
 
     JobPostCustomeQuestionListDTO entityToDto(JobPostCustomQuestionList jobPostCustomQuestionList);
+
     JobPostCustomQuestionList dtoToEntity(JobPostCustomeQuestionListDTO jobPostCustomeQuestionListDTO);
 
 
-    @Mapping(source = "salaryTypeEnum",target = "salaryType")
+    @Mapping(source = "salaryTypeEnum", target = "salaryType")
     JobPostSalaryRangeDTO entityToDto(JobPostSalaryRange jobPostSalaryRange);
 
+    @Mapping(source = "salaryType", target = "salaryTypeEnum")
     JobPostSalaryRange dtoToEntity(JobPostSalaryRangeDTO jobPostSalaryRangeDTO);
+
 
 }
 

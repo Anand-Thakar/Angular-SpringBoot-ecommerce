@@ -47,6 +47,7 @@ paths:
                       $ref: '#/components/schemas/jobPost'
 
 
+
         "401":
           description: Getting all Jobpost is Unauthorized to access
           content:
@@ -284,11 +285,11 @@ components:
           enum: [DRAFT, ACTIVE, INACTIVE, DELETED, SUSPENDED, EXPIRED]
 
         customeQuestionList:
-#          type: array
-#          description: create your custom questions
-#          uniqueItems: true
-#          items:
-          $ref: '#/components/schemas/jobPost_customeQuestionList'
+          type: array
+          description: create your custom questions
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/jobPost_customeQuestionList'
     ErrorResponse:
       type: object
       properties:
