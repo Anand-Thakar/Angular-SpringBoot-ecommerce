@@ -24,6 +24,7 @@ public interface JobPostMapper {
     @Mapping(source = "jobPostStatusEnum", target = "jobPostStatus")
     @Mapping(source = "jobPostHowToApply", target = "howToApply")
     @Mapping(source = "jobPostSalaryRange",target = "salaryRange")
+//    @Mapping(source = "customeQuestionList", target = "customeQuestionList")
     JobPostDTO entityToDto(JobPost jobPost);
 
     JobPost dtoToEntity(JobPostDTO jobPostDTO);
@@ -39,13 +40,8 @@ public interface JobPostMapper {
 
     @Mapping(source = "salaryTypeEnum",target = "salaryType")
     JobPostSalaryRangeDTO entityToDto(JobPostSalaryRange jobPostSalaryRange);
+
     JobPostSalaryRange dtoToEntity(JobPostSalaryRangeDTO jobPostSalaryRangeDTO);
 
-
-
-//    Set<JobPostCustomeQuestionListDTO> map(Set<JobPostCustomQuestionList> jobPostCustomQuestionLists);
-
-
-//    Set<JobPostSalaryRangeDTO> map(Set<JobPostSalaryRange> jobPostSalaryRanges);
 }
 

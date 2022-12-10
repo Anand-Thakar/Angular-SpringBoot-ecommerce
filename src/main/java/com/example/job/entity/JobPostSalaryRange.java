@@ -13,7 +13,7 @@ import org.openapitools.model.JobPostSalaryRangeDTO.SalaryTypeEnum;
 @NoArgsConstructor
 public class JobPostSalaryRange {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -21,7 +21,7 @@ public class JobPostSalaryRange {
     @Column(name = "salary_type_enum")
     private SalaryTypeEnum salaryTypeEnum;
 
-    @Column(name = "salary_minimum", nullable = false)
+    @Column(name = "salary_minimum")
     private String salaryMinimum;
 
     @Column(name = "salary_maximum")
@@ -30,8 +30,9 @@ public class JobPostSalaryRange {
     @Column(name = "wage")
     private String wage;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_post_id")
-    private JobPost jobPost;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "job_post_salary_range_id")
+    private JobPost jobPostSalaryRange;
+
 
 }

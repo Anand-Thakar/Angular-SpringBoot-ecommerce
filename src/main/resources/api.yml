@@ -269,11 +269,11 @@ components:
           type: string
           nullable: false
         jobCity:
-          type: array
-          description: Job cities
-          uniqueItems: true
-          items:
-            type: string
+#          type: string
+#          description: Job cities
+#          uniqueItems: true
+#          items:
+          type: string
         description:
           maxLength: 255
           type: string
@@ -333,11 +333,11 @@ components:
       type: object
       properties:
         question:
-          type: array
-          description: three cities
-          uniqueItems: true
-          items:
-            type: string
+          type: string
+#          description: three cities
+#          uniqueItems: true
+#          items:
+#            type: string
         answereType:
           type: string
           enum: [TEXT, NUMBER]

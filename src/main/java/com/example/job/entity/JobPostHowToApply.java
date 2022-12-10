@@ -13,7 +13,7 @@ import org.openapitools.model.JobPostHowToApplyDTO.ApplicationMethodEnum;
 @NoArgsConstructor
 public class JobPostHowToApply {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -27,8 +27,9 @@ public class JobPostHowToApply {
     private String website;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "job_post_id")
     private JobPost jobPost;
+
 
 }
