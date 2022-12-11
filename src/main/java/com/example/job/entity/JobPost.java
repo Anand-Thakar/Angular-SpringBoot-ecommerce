@@ -47,21 +47,25 @@ public class JobPost {
     @Column(name = "job_post_status_enum")
     private JobPostStatusEnum jobPostStatusEnum;
 
-    @OneToOne(mappedBy = "jobPost", orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @OneToOne(mappedBy = "jobPost", orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_post_how_to_apply_id",referencedColumnName = "id")
     private JobPostHowToApply jobPostHowToApply;
 
-    @OneToOne(mappedBy = "jobPostSalaryRange", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @OneToOne(mappedBy = "jobPostSalaryRange", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_post_salary_range_id",referencedColumnName = "id")
     private JobPostSalaryRange jobPostSalaryRange;
 
     @Column(name = "job_city")
     private String jobCity;
 
-    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_post_id", referencedColumnName = "id")
     private Set<JobPostCustomQuestionList> jobPostCustomQuestionLists = new java.util.LinkedHashSet<>();
-
-    //    @OneToOne(mappedBy = "jobPost", orphanRemoval = true)
-//    private JobPostCustomQuestionList jobPostCustomQuestionList;
-
 
     @Override
     public boolean equals(Object o) {

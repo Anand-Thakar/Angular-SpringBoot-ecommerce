@@ -20,7 +20,6 @@ public class JobPostCustomQuestionList {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
     @Column(name = "question")
     private String question;
 
@@ -30,15 +29,13 @@ public class JobPostCustomQuestionList {
     @Column(name = "answere_type_enum")
     private AnswereTypeEnum answereType;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "job_post_id")
     private JobPost jobPost;
 
-
-//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @ManyToOne
 //    @JoinColumn(name = "job_post_id")
 //    private JobPost jobPost;
-
 
     @Override
     public boolean equals(Object o) {

@@ -30,10 +30,9 @@ public class JobPostHowToApply {
     @Column(name = "website")
     private String website;
 
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "job_post_id")
-    private JobPost jobPost;
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "job_post_id")
+//    private JobPost jobPost;
 
     @Override
     public boolean equals(Object o) {

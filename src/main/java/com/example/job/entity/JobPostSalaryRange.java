@@ -32,9 +32,9 @@ public class JobPostSalaryRange {
     @Column(name = "wage")
     private String wage;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "job_post_salary_range_id")
-    private JobPost jobPostSalaryRange;
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "job_post_salary_range_id")
+//    private JobPost jobPostSalaryRange;
 
     @Override
     public boolean equals(Object o) {

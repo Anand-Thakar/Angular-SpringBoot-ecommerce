@@ -2,6 +2,7 @@ package com.example.job.controller;
 
 import com.example.job.JobApi;
 import com.example.job.entity.JobPost;
+import com.example.job.entity.JobPostCustomQuestionList;
 import com.example.job.mapper.JobPostMapper;
 import com.example.job.model.GetAllJobPostResponse;
 import com.example.job.repository.JobPostRepository;
@@ -50,7 +51,6 @@ public class JobController implements JobApi {
             JobPostDTO responseDto = jobPostMapper.entityToDto(jobPost);
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         } else {
-
             ErrorResponseDTO errorResponseDTO = errorResponseDTO(404, "JMS-findByID", "No records found of " + jobId);
             return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
         }
@@ -58,9 +58,10 @@ public class JobController implements JobApi {
 
     @Override
     public ResponseEntity<String> deleteJobById(Long jobId) {
+
         if (jobPostRepository.findById(jobId).isPresent()) {
             jobPostRepository.deleteById(jobId);
-            return new ResponseEntity<>("Post for " + jobId + "get deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Post for jobPostID no. " + jobId + "get deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No such records for jobPostID no." + jobId + " found", HttpStatus.NOT_FOUND);
         }
@@ -77,7 +78,7 @@ public class JobController implements JobApi {
         }
         GetAllJobPostResponse getAllJobPostResponse = new GetAllJobPostResponse();
         List<JobPost> all = jobPostRepository.findAll();
-        List<JobPostDTO> dtoList = all.stream().map(entry->jobPostMapper.entityToDto(entry)).collect(Collectors.toList());
+        List<JobPostDTO> dtoList = all.stream().map(entry -> jobPostMapper.entityToDto(entry)).collect(Collectors.toList());
 
         //adding list in other class
         getAllJobPostResponse.setJobPostDTOList(dtoList);
@@ -85,17 +86,21 @@ public class JobController implements JobApi {
 
     }
 
+    //need to make it patch
     @Override
     public ResponseEntity<CreateJob200ResponseDTO> updateJobPost(JobPostDTO jobPostDTO) {
 
-        Long id = jobPostDTO.getId();
+            Long id = jobPostDTO.getId();
+
         if (jobPostRepository.findById(id).isPresent()) {
+
             JobPost updatedPost = jobPostMapper.dtoToEntity(jobPostDTO);
             JobPost responsePost = jobPostRepository.save(updatedPost);
             JobPostDTO jobPostDTO1 = jobPostMapper.entityToDto(responsePost);
             return new ResponseEntity<>(jobPostDTO1, HttpStatus.OK);
+
         } else {
-            ErrorResponseDTO errorResponseDTO = errorResponseDTO(404, "JMS-updateJobPost", "Failed to updateJobPost with JobPost Id" + jobPostDTO.getId());
+            ErrorResponseDTO errorResponseDTO = errorResponseDTO(404, "JMS-updateJobPost", "Failed to updateJobPost with JobPost Id no." + jobPostDTO.getId());
             return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
         }
     }
@@ -108,4 +113,5 @@ public class JobController implements JobApi {
         errorResponseDTO.setMessage(message);
         return errorResponseDTO;
     }
+
 }

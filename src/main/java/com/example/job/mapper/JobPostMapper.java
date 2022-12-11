@@ -12,10 +12,6 @@ import org.openapitools.model.JobPostDTO;
 import org.openapitools.model.JobPostHowToApplyDTO;
 import org.openapitools.model.JobPostSalaryRangeDTO;
 
-import java.util.List;
-import java.util.Set;
-
-
 @Mapper(componentModel = "spring")
 public interface JobPostMapper {
 
@@ -30,6 +26,7 @@ public interface JobPostMapper {
     @Mapping(source = "jobPostCustomQuestionLists", target = "customeQuestionList")
     JobPostDTO entityToDto(JobPost jobPost);
 
+
     @Mapping(source = "jobType", target = "jobTypeEnum")
     @Mapping(source = "jobPostStatus", target = "jobPostStatusEnum")
     @Mapping(source = "howToApply", target = "jobPostHowToApply")
@@ -40,9 +37,6 @@ public interface JobPostMapper {
     JobPost dtoToEntity(JobPostDTO jobPostDTO);
 
 
-
-    Set<JobPostCustomeQuestionListDTO> map(Set<JobPostCustomQuestionList> jobPostCustomQuestionLists);
-
     @Mapping(source = "applicationMethodEnum", target = "applicationMethod")
     JobPostHowToApplyDTO entityToDto(JobPostHowToApply jobPostHowToApply);
 
@@ -50,16 +44,14 @@ public interface JobPostMapper {
     JobPostHowToApply dtoToEntity(JobPostHowToApplyDTO jobPostHowToApplyDTO);
 
 
-    JobPostCustomeQuestionListDTO entityToDto(JobPostCustomQuestionList jobPostCustomQuestionList);
-
-    JobPostCustomQuestionList dtoToEntity(JobPostCustomeQuestionListDTO jobPostCustomeQuestionListDTO);
-
-
     @Mapping(source = "salaryTypeEnum", target = "salaryType")
     JobPostSalaryRangeDTO entityToDto(JobPostSalaryRange jobPostSalaryRange);
 
     @Mapping(source = "salaryType", target = "salaryTypeEnum")
     JobPostSalaryRange dtoToEntity(JobPostSalaryRangeDTO jobPostSalaryRangeDTO);
+
+    JobPostCustomeQuestionListDTO entityToDto(JobPostCustomQuestionList jobPostCustomQuestionList);
+    JobPostCustomQuestionList dtoToEntity(JobPostCustomeQuestionListDTO jobPostCustomeQuestionListDTO);
 
 
 }
