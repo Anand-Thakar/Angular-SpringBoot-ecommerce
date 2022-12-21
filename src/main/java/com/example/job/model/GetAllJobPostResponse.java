@@ -2,7 +2,7 @@ package com.example.job.model;
 
 import lombok.*;
 import org.openapitools.model.FindJobs200ResponseDTO;
-import org.openapitools.model.JobPostCustomeQuestionListDTO;
+import org.openapitools.model.JobPostCustomQuestionListDTO;
 import org.openapitools.model.JobPostDTO;
 
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class GetAllJobPostResponse implements FindJobs200ResponseDTO {
     private List<JobPostDTO> jobPostDTOList;
-    private Set<JobPostCustomeQuestionListDTO> customeQuestionList= new HashSet<>();
+    private Set<JobPostCustomQuestionListDTO> customQuestionList = new HashSet<>();
 
 
 

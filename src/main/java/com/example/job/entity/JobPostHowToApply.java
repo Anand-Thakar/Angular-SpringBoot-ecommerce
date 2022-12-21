@@ -23,7 +23,7 @@ public class JobPostHowToApply {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "application_method_enum")
-    private ApplicationMethodEnum applicationMethodEnum;
+    private ApplicationMethodEnum applicationMethod;
     @Column(name = "email")
     private String email;
 

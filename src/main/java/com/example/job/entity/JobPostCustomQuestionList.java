@@ -3,7 +3,7 @@ package com.example.job.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.openapitools.model.JobPostCustomeQuestionListDTO.AnswereTypeEnum;
+import org.openapitools.model.JobPostCustomQuestionListDTO.AnswerTypeEnum;
 import java.util.Objects;
 
 
@@ -26,8 +26,8 @@ public class JobPostCustomQuestionList {
     @ToString.Exclude
     @Basic(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    @Column(name = "answere_type_enum")
-    private AnswereTypeEnum answereType;
+    @Column(name = "answer_type_enum")
+    private AnswerTypeEnum answerType;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "job_post_id")

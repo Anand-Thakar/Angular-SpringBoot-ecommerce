@@ -1,12 +1,12 @@
 openapi: 3.0.0
 info:
   version: "1.0"
-  title: Employer Service (HrNG)
+  title: Job Service (HrNG)
   description: |
-    HrNG service that will provide the management of the Employer data. 
+    HrNG service that will provide the management of the Job Post data. 
     The following operations will be provided: \
-    Creation of an employer, getting the list of employers, 
-    updating an employer, deletion of an employer, and finding an employer.
+    Creation of an JobPost, getting the list of all JobPost, 
+    updating an JobPost, deletion of an JobPost, and finding an JobPost.
   termsOfService: https://htng.io/terms
   contact:
     name: Admin
@@ -69,8 +69,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-
-
     post:
       tags:
         - job
@@ -115,40 +113,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-    patch:
-      tags:
-        - job
-      summary: Update job post
-      description: Update job post
-      operationId: updateJobPost
-      requestBody:
-        description: Update job post
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/jobPost'
-        required: true
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/jobPost'
-                  - $ref: '#/components/schemas/ErrorResponse'
-        "404":
-          description: JobPost not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Invalid employer data supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
 
   /job/{jobId}:
@@ -191,6 +155,48 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
 
+    patch:
+      tags:
+        - job
+      summary: Update job post
+      description: Update job post
+      operationId: updateJobPost
+      parameters:
+        - name: jobId
+          in: path
+          description: ID of job to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update job post
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jobPost'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/jobPost'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: JobPost not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Invalid employer data supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     delete:
       tags:
@@ -258,10 +264,6 @@ components:
           nullable: false
           example: FULLTIME
         salaryRange:
-#          type: object
-#          description: Set of salary ranges
-#          uniqueItems: true
-#          items:
           $ref: '#/components/schemas/jobPost_salaryRange'
         closingDate:
           type: string
@@ -270,10 +272,6 @@ components:
           type: string
           nullable: false
         jobCity:
-#          type: string
-#          description: Job cities
-#          uniqueItems: true
-#          items:
           type: string
         description:
           maxLength: 255
@@ -284,12 +282,12 @@ components:
           type: string
           enum: [DRAFT, ACTIVE, INACTIVE, DELETED, SUSPENDED, EXPIRED]
 
-        customeQuestionList:
+        customQuestionList:
           type: array
           description: create your custom questions
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/jobPost_customeQuestionList'
+            $ref: '#/components/schemas/jobPost_customQuestionList'
     ErrorResponse:
       type: object
       properties:
@@ -330,15 +328,11 @@ components:
           type: string
         website:
           type: string
-    jobPost_customeQuestionList:
+    jobPost_customQuestionList:
       type: object
       properties:
         question:
           type: string
-#          description: three cities
-#          uniqueItems: true
-#          items:
-#            type: string
-        answereType:
+        answerType:
           type: string
           enum: [TEXT, NUMBER]

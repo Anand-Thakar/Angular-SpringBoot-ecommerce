@@ -21,7 +21,7 @@ public class JobPostSalaryRange {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "salary_type_enum")
-    private SalaryTypeEnum salaryTypeEnum;
+    private SalaryTypeEnum salaryType;
 
     @Column(name = "salary_minimum")
     private String salaryMinimum;

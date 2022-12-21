@@ -2,6 +2,7 @@ package com.example.job.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 import org.openapitools.model.JobPostDTO.JobPostStatusEnum;
 import org.openapitools.model.JobPostDTO.JobTypeEnum;
@@ -30,42 +31,43 @@ public class JobPost {
     private String positionTitle;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "job_type_enum", nullable = false)
-    private JobTypeEnum jobTypeEnum;
+    @Column(name = "job_type", nullable = false)
+    private JobTypeEnum jobType;
 
     @FutureOrPresent(message = "yyyy-mm-dd")
     @Column(name = "closing_date")
     private LocalDate closingDate;
 
-    @Column(name = "required_qualififcation", nullable = false)
-    private String requiredQualififcation;
+    @Column(name = "required_qualification", nullable = false)
+    private String requiredQualification;
 
     @Column(name = "description")
     private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "job_post_status_enum")
-    private JobPostStatusEnum jobPostStatusEnum;
+    private JobPostStatusEnum jobPostStatus;
 
 //    @OneToOne(mappedBy = "jobPost", orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "job_post_how_to_apply_id",referencedColumnName = "id")
-    private JobPostHowToApply jobPostHowToApply;
+    private JobPostHowToApply howToApply;
 
 //    @OneToOne(mappedBy = "jobPostSalaryRange", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "job_post_salary_range_id",referencedColumnName = "id")
-    private JobPostSalaryRange jobPostSalaryRange;
+    private JobPostSalaryRange salaryRange;
 
     @Column(name = "job_city")
     private String jobCity;
 
 //    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn(name = "job_post_id", referencedColumnName = "id")
-    private Set<JobPostCustomQuestionList> jobPostCustomQuestionLists = new java.util.LinkedHashSet<>();
+    private Set<JobPostCustomQuestionList> customQuestionList = new java.util.LinkedHashSet<>();
+
 
     @Override
     public boolean equals(Object o) {

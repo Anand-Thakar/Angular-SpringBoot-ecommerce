@@ -1,8 +1,6 @@
 package com.example.job.controller;
-
 import com.example.job.JobApi;
 import com.example.job.entity.JobPost;
-import com.example.job.entity.JobPostCustomQuestionList;
 import com.example.job.mapper.JobPostMapper;
 import com.example.job.model.GetAllJobPostResponse;
 import com.example.job.repository.JobPostRepository;
@@ -10,23 +8,17 @@ import org.openapitools.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 @RestController
 public class JobController implements JobApi {
-
     private JobPostRepository jobPostRepository;
     private JobPostMapper jobPostMapper;
-
 
     public JobController(JobPostRepository jobPostRepository, JobPostMapper jobPostMapper) {
         this.jobPostRepository = jobPostRepository;
         this.jobPostMapper = jobPostMapper;
-
     }
 
     @Override
@@ -86,26 +78,23 @@ public class JobController implements JobApi {
 
     }
 
-    //need to make it patch
     @Override
-    public ResponseEntity<CreateJob200ResponseDTO> updateJobPost(JobPostDTO jobPostDTO) {
-
-            Long id = jobPostDTO.getId();
-
-        if (jobPostRepository.findById(id).isPresent()) {
-
-            JobPost updatedPost = jobPostMapper.dtoToEntity(jobPostDTO);
-            JobPost responsePost = jobPostRepository.save(updatedPost);
-            JobPostDTO jobPostDTO1 = jobPostMapper.entityToDto(responsePost);
-            return new ResponseEntity<>(jobPostDTO1, HttpStatus.OK);
-
+    public ResponseEntity<CreateJob200ResponseDTO> updateJobPost(Long jobId, JobPostDTO jobPostDTO) {
+        boolean present = jobPostRepository.findById(jobId).isPresent();
+        if (present) {
+            JobPost jobPost = jobPostMapper.dtoToEntity(jobPostDTO);
+            JobPost save = jobPostRepository.save(jobPost);
+            System.out.println(save);
+            JobPostDTO responseDto = jobPostMapper.entityToDto(save);
+            return new ResponseEntity<>(responseDto,HttpStatus.OK);
         } else {
-            ErrorResponseDTO errorResponseDTO = errorResponseDTO(404, "JMS-updateJobPost", "Failed to updateJobPost with JobPost Id no." + jobPostDTO.getId());
+            ErrorResponseDTO errorResponseDTO = errorResponseDTO(404,
+                    "JMS-updateJobPost", "Failed to update Job Post for JobPost Id " + jobId);
             return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
         }
     }
 
-    private ErrorResponseDTO errorResponseDTO(int errorCode, String appId, String message) {
+    public ErrorResponseDTO errorResponseDTO(int errorCode, String appId, String message) {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();
         errorResponseDTO.setErrorCode(errorCode);
         errorResponseDTO.setAppId(appId);
@@ -113,5 +102,4 @@ public class JobController implements JobApi {
         errorResponseDTO.setMessage(message);
         return errorResponseDTO;
     }
-
 }
